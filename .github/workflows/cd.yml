@@ -1,6 +1,5 @@
 ---
   name: Continuous Delivery
-  
   # Trigger this workflow manually or after successful testing.
   on:
     workflow_dispatch:
@@ -11,11 +10,9 @@
         - Continuous Integration
       types:
         - completed
-  
   concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
-  
   jobs:
     deploy:
       runs-on: ubuntu-latest
@@ -23,7 +20,6 @@
         # Use the same hardware architecture and the same Python version
         # as the Lambda function.
         - uses: actions/checkout@v4
-  
         # Log into AWS.
         - uses: aws-actions/configure-aws-credentials@v4
           with:
@@ -33,7 +29,6 @@
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY || null }}
             mask-aws-account-id: true
             role-skip-session-tagging: true
-  
         # Initialize OpenTofu and deploy the stack.
         - uses: opentofu/setup-opentofu@v1.0.2
         - run: tofu init
